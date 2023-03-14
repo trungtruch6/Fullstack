@@ -11,7 +11,8 @@ let app = express();
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-
+// app.use('/public', express.static('public'));
+// app.use(express.static("public"));
 
 viewEngine(app);
 initWebRoutes(app);

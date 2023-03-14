@@ -1,6 +1,7 @@
 // Hàm render
 import { cls } from 'sequelize';
 import db from '../models/index';
+import CRUDservice from '../services/CRUDservice';
 
 let getHomePage =  async (req, res) => {
     try {
@@ -23,10 +24,22 @@ let getHomePage =  async (req, res) => {
 let getUserPage = (req, res) => {
     return res.render('userPage.ejs')
 }  
-    
+
+let getCRUD = (req, res) => {
+    return res.render('crud.ejs')
+}
+
+let postCRUD = async (req, res) => {
+    let message = await CRUDservice.createNewUser(req.body);
+    console.log(message)
+    return res.send('Post CRUD from Server')
+}
+
 module.exports =  {
     getHomePage: getHomePage,
     getUserPage: getUserPage,
+    getCRUD: getCRUD,
+    postCRUD: postCRUD,
 }
 
 
