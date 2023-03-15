@@ -6,11 +6,6 @@ import CRUDservice from "../services/CRUDservice";
 let getHomePage = async (req, res) => {
   try {
     let data = await db.User.findAll();
-    console.log("------------------------------------");
-
-    console.log(data);
-
-    console.log("------------------------------------");
 
     return res.render("homePage.ejs", {
       data: JSON.stringify(data),
@@ -44,12 +39,33 @@ let displayCRUD = async (req, res) => {
   });
 };
 
+let editCRUD = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    let userData = await CRUDservice.getUserInfoById(userId);
+    return res.render("editCRUD.ejs", {
+      user: userData,
+    });
+  } else {
+    return res.send("User not found!");
+  }
+};
+
+let putCRUD = async (req, res) => {
+  let data = req.body;
+  let allUsers = await CRUDservice.updateUserData(data);
+  return res.render("displayCRUD.ejs", {
+    dataTable: allUsers,
+  });
+};
 module.exports = {
   getHomePage: getHomePage,
   getUserPage: getUserPage,
   getCRUD: getCRUD,
   postCRUD: postCRUD,
   displayCRUD: displayCRUD,
+  editCRUD: editCRUD,
+  putCRUD: putCRUD,
 };
 
 // File controller này sẽ dùng nhiều hàm nên module.exports sẽ được đặt là {}

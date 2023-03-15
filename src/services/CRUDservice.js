@@ -41,7 +41,7 @@ let hashUserPassword = (password) => {
     }
   });
 };
-
+// Lấy tất cả giá trị user từ database
 let getAllUser = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -54,11 +54,56 @@ let getAllUser = () => {
     }
   });
 };
+// Lấy giá trị user ID từ database
+let getUserInfoById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: userId },
+        raw: true,
+      });
+      if (user) {
+        resolve(user);
+      } else {
+        resolve({});
+      }
+      resolvel();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// Update database
+let updateUserData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data.id },
+      });
+      if (user) {
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        user.address = data.address;
+        user.phoneNumber = data.phoneNumber;
+
+        await user.save();
+        let allUsers = await db.User.findAll();
+        resolve(allUsers);
+      } else {
+        resolve();
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 module.exports = {
   createNewUser: createNewUser,
   hashUserPassword: hashUserPassword,
   getAllUser: getAllUser,
+  getUserInfoById: getUserInfoById,
+  updateUserData: updateUserData,
 };
 
 // Nhận Data từ Controller và xử lý dữ liệu và gửi lại Data cho Controller để hiển thị.

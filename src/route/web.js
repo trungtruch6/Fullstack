@@ -14,6 +14,10 @@ let initWebRoutes = (app) => {
 
   router.get("/display-crud", homeControllers.displayCRUD);
 
+  router.get("/edit-crud", homeControllers.editCRUD);
+
+  router.post("/put-crud", homeControllers.putCRUD);
+
   return app.use("/", router);
 };
 
