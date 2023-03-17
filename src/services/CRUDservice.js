@@ -18,13 +18,6 @@ let createNewUser = async (data) => {
       });
 
       resolve("Creat a new User succeed!");
-      console.log("------------------------------------");
-
-      console.log(hashPasswordFromBcrypt);
-      console.log("************************************");
-      console.log(data);
-
-      console.log("------------------------------------");
     } catch (error) {
       reject(error);
     }
@@ -55,12 +48,11 @@ let getAllUser = () => {
   });
 };
 // Lấy giá trị user ID từ database
-let getUserInfoById = (userId) => {
+let getUserInfoById = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let user = await db.User.findOne({
-        where: { id: userId },
-        raw: true,
+        where: { id: data },
       });
       if (user) {
         resolve(user);
@@ -97,13 +89,28 @@ let updateUserData = (data) => {
     }
   });
 };
-
+let deleteUserById = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data },
+      });
+      if (user) {
+        await user.destroy();
+      }
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   createNewUser: createNewUser,
   hashUserPassword: hashUserPassword,
   getAllUser: getAllUser,
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,
+  deleteUserById: deleteUserById,
 };
 
 // Nhận Data từ Controller và xử lý dữ liệu và gửi lại Data cho Controller để hiển thị.

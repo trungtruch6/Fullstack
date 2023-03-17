@@ -54,9 +54,19 @@ let editCRUD = async (req, res) => {
 let putCRUD = async (req, res) => {
   let data = req.body;
   let allUsers = await CRUDservice.updateUserData(data);
+  console.log(allUsers);
   return res.render("displayCRUD.ejs", {
     dataTable: allUsers,
   });
+};
+let deleteCRUD = async (req, res) => {
+  let userId = req.query.id;
+  if (userId) {
+    await CRUDservice.deleteUserById(userId);
+    return res.send("Success");
+  } else {
+    return res.send("");
+  }
 };
 module.exports = {
   getHomePage: getHomePage,
@@ -66,6 +76,7 @@ module.exports = {
   displayCRUD: displayCRUD,
   editCRUD: editCRUD,
   putCRUD: putCRUD,
+  deleteCRUD: deleteCRUD,
 };
 
 // File controller này sẽ dùng nhiều hàm nên module.exports sẽ được đặt là {}
